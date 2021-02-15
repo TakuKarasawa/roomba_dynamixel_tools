@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="roomba_dynamixel_controller" type="roomba_dynamixel_controller" name="roomab_dynamixel_controller" output="screen" >
+        <param name="wait_time" value="10.0" type="double" />
+    </node>
+
+</launch>

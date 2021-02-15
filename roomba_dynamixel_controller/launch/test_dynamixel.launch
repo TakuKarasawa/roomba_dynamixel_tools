@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="roomba_dynamixel_controller" type="test_dynamixel" name="test_dynamixel" output="screen" >
+        <param name="target_angle" value="-3.14" type="double"/>
+        <param name="hz" value="10" type="double" />
+        <param name="dynamixel_name" value="dynamixel" type="string" />
+        <param name="mode" value="writer" type="string" />
+    </node>
+
+</launch>
