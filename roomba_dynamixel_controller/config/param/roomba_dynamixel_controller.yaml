@@ -1,0 +1,7 @@
+# roomba_dynamixel_controller's parameter
+
+offset_angle: 
+target_angle: 
+hz: 
+wait_time: 
+dynamixel_name:

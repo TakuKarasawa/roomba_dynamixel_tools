@@ -23,6 +23,7 @@ private:
     float record_angle;
     double wait_time;
     double Hz;
+    double offset_angle;
     bool angle_received = false;
 
     ros::NodeHandle nh;

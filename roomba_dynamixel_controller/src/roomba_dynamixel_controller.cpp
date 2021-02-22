@@ -4,6 +4,7 @@ Dynamixel::Dynamixel() : nh("~")
 {
     //nh.param("target_angle",target_angle,{0.0});
     nh.param("wait_time",wait_time,{10.0});
+    nh.param("offset_angle",offset_angle,{0.0});
 
     joint_pub = nh.advertise<trajectory_msgs::JointTrajectory>("/dynamixel_workbench/joint_trajectory",1);
     angle_sub = nh.subscribe("/angle",1,&Dynamixel::angle_callback,this);
@@ -36,6 +37,9 @@ void Dynamixel::set_parameter(double angle=0.0)
 {
     if(angle > M_PI) angle -= 2*M_PI;
     if(angle < -M_PI) angle += 2*M_PI;
+
+    if(angle > M_PI - offset_angle) angle = -M_PI + offset_angle;
+    else angle += offset_angle;
 
     jt.points[0].positions[0] = angle;
     jt.points[0].time_from_start = ros::Duration(1.0);
@@ -78,7 +82,7 @@ void Dynamixel::process()
         ros::spinOnce();
         if(angle_received){
             ros::Duration(1.0).sleep();
-            rotation(0.0);
+            rotation(offset_angle);
             ros::Duration(1.0).sleep();
             if(record_angle != target_angle){ 
                 record_angle = target_angle;
