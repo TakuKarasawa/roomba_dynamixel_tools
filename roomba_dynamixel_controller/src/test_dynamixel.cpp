@@ -21,7 +21,7 @@ Test_Dynamixel::Test_Dynamixel() : nh("~")
     std::cout << "target_angle: " << target_angle << std::endl;
     std::cout << "dynamixel_name: " << dynamixel_name << std::endl;
     std::cout << "mode: " << mode << std::endl;
-    std::cout << std::endl; 
+    std::cout << std::endl;
 }
 
 void Test_Dynamixel::jointstate_callback(const sensor_msgs::JointState::ConstPtr& msg)

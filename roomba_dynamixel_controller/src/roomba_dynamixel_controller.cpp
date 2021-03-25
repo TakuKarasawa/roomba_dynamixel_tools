@@ -29,7 +29,14 @@ void Dynamixel::angle_callback(const dynamixel_angle_msgs::DynamixelAngle::Const
     target_angle = msg->theta;
     //target_angle *= M_PI/180;
 
-    std::cout << "target_angle: " << target_angle << std::endl;
+    //std::cout << "target_angle: " << target_angle << std::endl;
+
+    //if(target_angle > M_PI) target_angle -= 2*M_PI;
+    //if(target_angle < -M_PI) target_angle += 2*M_PI;
+
+    //std::cout << "offset_angle: " << offset_angle << std::endl;
+    //if(target_angle > M_PI - offset_angle) target_angle = -2*M_PI + offset_angle + target_angle;
+    //else target_angle += offset_angle;
 
 }
 
@@ -38,8 +45,11 @@ void Dynamixel::set_parameter(double angle=0.0)
     if(angle > M_PI) angle -= 2*M_PI;
     if(angle < -M_PI) angle += 2*M_PI;
 
-    if(angle > M_PI - offset_angle) angle = -M_PI + offset_angle;
-    else angle += offset_angle;
+    //std::cout << "angle: " << angle << std::endl;
+    //std::cout << "offset_angle: " << offset_angle << std::endl;
+
+    if(angle > M_PI - offset_angle) angle = -(2*M_PI - offset_angle - angle);
+    else angle += offset_angle ;
 
     jt.points[0].positions[0] = angle;
     jt.points[0].time_from_start = ros::Duration(1.0);
@@ -82,7 +92,7 @@ void Dynamixel::process()
         ros::spinOnce();
         if(angle_received){
             ros::Duration(1.0).sleep();
-            rotation(offset_angle);
+            rotation(0.0);
             ros::Duration(1.0).sleep();
             if(record_angle != target_angle){ 
                 record_angle = target_angle;
