@@ -4,7 +4,7 @@
     <node pkg="roomba_dynamixel_controller" type="teleop_dynamixel_angle" name="teleop_dynamixel_angle" output="screen" />
     <node pkg="roomba_dynamixel_controller" type="roomba_dynamixel_controller" name="roomab_dynamixel_controller" >
         <param name="wait_time" value="10.0" type="double" />
-        <param name="offset_angle" value="0.25" type="double" />
+        <param name="offset_angle" value="0.43" type="double" />
     </node>
 
 </launch>
