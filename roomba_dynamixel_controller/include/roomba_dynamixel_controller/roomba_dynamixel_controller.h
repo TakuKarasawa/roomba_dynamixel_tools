@@ -15,11 +15,12 @@ public:
 private:
     void angle_callback(const dynamixel_angle_msgs::DynamixelAngle::ConstPtr& msg);
     void set_parameter(double angle);
-    void rotation(double angle);
+    void normalize(double& angle);
+    void offset_process(double& angle);
 
-    float target_angle;   
-    double offset_angle;
-    double execution_time;
+    float target_angle;     // 目標の角度
+    double offset_angle;    // オフセットの角度
+    double execution_time;  // 実行時間
 
     ros::NodeHandle private_nh;
     ros::NodeHandle nh;

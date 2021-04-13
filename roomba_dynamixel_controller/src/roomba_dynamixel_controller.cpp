@@ -23,20 +23,32 @@ void Dynamixel::angle_callback(const dynamixel_angle_msgs::DynamixelAngle::Const
 
 void Dynamixel::set_parameter(double angle=0.0)
 {
-    while(angle > M_PI || angle < -M_PI){
-        if(angle > M_PI) angle -= 2*M_PI;
-        if(angle < -M_PI) angle += 2*M_PI;
-    }
-
-    if(angle > M_PI - offset_angle) angle = -M_PI + offset_angle;
-    else angle += offset_angle;
-
-    if(angle > M_PI - offset_angle) angle = -(2*M_PI - offset_angle - angle);
-    else angle += offset_angle ;
+    normalize(angle);
+    offset_process(angle);
 
     jt.points[0].positions[0] = angle;
     jt.points[0].time_from_start = ros::Duration(execution_time);
     joint_pub.publish(jt);
+}
+
+void Dynamixel::normalize(double& angle)
+{
+    while(angle > M_PI || angle < -M_PI){
+        if(angle > M_PI) angle -= 2*M_PI;
+        if(angle < -M_PI) angle += 2*M_PI;
+    }
+}
+
+void Dynamixel::offset_process(double& angle)
+{
+    if(offset_angle > 0){
+        if(angle > M_PI - offset_angle) angle += offset_angle - 2*M_PI;
+        else angle += offset_angle;
+    }
+    else if(offset_angle < 0){
+        if(angle < -M_PI - offset_angle) angle = offset_angle + 2*M_PI;
+        else angle += offset_angle;
+    }
 }
 
 void Dynamixel::process(){ ros::spin();}
