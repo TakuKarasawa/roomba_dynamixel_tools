@@ -14,20 +14,15 @@ public:
 
 private:
     void angle_callback(const dynamixel_angle_msgs::DynamixelAngle::ConstPtr& msg);
-    void set_parameter(float angle);
-    void rotation(float angle);
-    void normalize(float& angle);
-    void offset(float& angle);
+    void set_parameter(double angle);
+    void rotation(double angle);
 
-    float target_angle;
-    float record_angle;
-    double wait_time;
-    double Hz;
+    float target_angle;   
     double offset_angle;
-    bool angle_received = false;
+    double execution_time;
 
-    ros::NodeHandle nh;
     ros::NodeHandle private_nh;
+    ros::NodeHandle nh;
     ros::Publisher joint_pub;
     ros::Subscriber angle_sub;
 
