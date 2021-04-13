@@ -1,8 +1,10 @@
 #include "roomba_dynamixel_controller/roomba_dynamixel_controller.h"
+
 Dynamixel::Dynamixel() : private_nh("~")
 {
     private_nh.param("offset_angle",offset_angle,{0.0});
     private_nh.param("execution_time",execution_time,{1.0});
+    private_nh.param("dynamixel_name",dynamixel_name,{"dynamixel"});
     joint_pub = nh.advertise<trajectory_msgs::JointTrajectory>("/dynamixel_workbench/joint_trajectory",1);
     angle_sub = nh.subscribe("/angle",1,&Dynamixel::angle_callback,this);
 

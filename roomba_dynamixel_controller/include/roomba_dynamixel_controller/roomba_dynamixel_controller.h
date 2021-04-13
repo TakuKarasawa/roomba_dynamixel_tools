@@ -21,6 +21,7 @@ private:
     float target_angle;     // 目標の角度
     double offset_angle;    // オフセットの角度
     double execution_time;  // 実行時間
+    std::string dynamixel_name;
 
     ros::NodeHandle private_nh;
     ros::NodeHandle nh;
