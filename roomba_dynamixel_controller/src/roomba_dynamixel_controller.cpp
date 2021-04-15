@@ -35,7 +35,7 @@ void Dynamixel::set_parameter(double angle=0.0)
 
 void Dynamixel::normalize(double& angle)
 {
-    while(angle > M_PI || angle < -M_PI){
+    while(angle >= M_PI || angle <= -M_PI){
         if(angle > M_PI) angle -= 2*M_PI;
         if(angle < -M_PI) angle += 2*M_PI;
     }
