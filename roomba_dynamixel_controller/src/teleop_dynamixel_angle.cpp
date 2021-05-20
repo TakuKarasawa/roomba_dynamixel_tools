@@ -1,6 +1,17 @@
-#include "ros/ros.h"
+#include <ros/ros.h>
+
 #include "dynamixel_angle_msgs/DynamixelAngle.h"
+
+#include <iostream>
 #include <math.h>
+
+bool is_number(const std::string& str)
+{
+    for(char const &c : str){
+        if(std::isdigit(c) == 0) return false;
+        else return true;
+    }
+}
 
 int main(int argc,char **argv)
 {
@@ -8,16 +19,20 @@ int main(int argc,char **argv)
     ros::NodeHandle nh;
     ros::Publisher pub = nh.advertise<dynamixel_angle_msgs::DynamixelAngle>("/angle",1);
  
-    while(true){
+    while(1){
         std::cout << "Input an angle [rad] (-M_PI ~ M_PI)" << std::endl;
-        float input_angle;
-        std::cin >> input_angle;
-
-        dynamixel_angle_msgs::DynamixelAngle angle;
-        angle.theta = input_angle;
-
-        pub.publish(angle);
-        ROS_INFO_STREAM("Success to publish angle");
+        
+        std::string input;
+        std::cin >> input;
+        if(is_number(input)){
+            dynamixel_angle_msgs::DynamixelAngle angle;
+            angle.theta = std::stof(input);
+            pub.publish(angle);
+            ROS_INFO_STREAM("Success to publish angle");        
+        }else{
+            if(input == "q") break;
+            ROS_ERROR("The input value is invalid");
+        }
     }
 
     return 0;

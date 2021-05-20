@@ -110,7 +110,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES roomba_dynamixel_controller
-#  CATKIN_DEPENDS cmake_modules geometry_msgs roscpp sensor_msgs std_msgs std_srvs trajectory_msgs
+  CATKIN_DEPENDS cmake_modules geometry_msgs roscpp sensor_msgs std_msgs std_srvs trajectory_msgs
 #  DEPENDS system_lib
 )
 

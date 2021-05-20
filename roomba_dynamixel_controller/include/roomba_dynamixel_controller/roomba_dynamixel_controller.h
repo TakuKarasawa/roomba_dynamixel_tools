@@ -1,15 +1,17 @@
 #ifndef __ROOMBA_DYNAMIXEL_CONTROLLER_H
 #define __ROOMBA_DYNAMIXEL_CONTROLLER_H
 
-#include "ros/ros.h"
-#include "ros/time.h" 
-#include "trajectory_msgs/JointTrajectory.h"
+#include <ros/ros.h>
+#include <ros/time.h> 
+#include <trajectory_msgs/JointTrajectory.h>
+
 #include "dynamixel_angle_msgs/DynamixelAngle.h"
+
 #include <math.h>
 
-class Dynamixel{
+class RoombaDynamixelController{
 public:
-    Dynamixel();
+    RoombaDynamixelController();
     void process();
 
 private:
@@ -18,10 +20,11 @@ private:
     void normalize(double& angle);
     void offset_process(double& angle);
 
-    float target_angle;     // 目標の角度
-    double offset_angle;    // オフセットの角度
-    double execution_time;  // 実行時間
+    float target_angle;             // 目標の角度
+    double offset_angle;            // オフセットの角度
+    double execution_time;          // 実行時間
     std::string dynamixel_name;
+    std::string dynamixel_frame;  
 
     ros::NodeHandle private_nh;
     ros::NodeHandle nh;

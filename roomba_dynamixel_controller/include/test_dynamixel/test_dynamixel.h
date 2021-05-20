@@ -22,6 +22,7 @@ private:
     void dynamixel_reader();
     void dynamixel_writer();
 
+    ros::NodeHandle private_nh;
     ros::NodeHandle nh;
     ros::Subscriber joint_sub;
     ros::Publisher joint_pub;
@@ -29,6 +30,7 @@ private:
     double hz;
     double target_angle;
     std::string dynamixel_name;
+    std::string dynamixel_frame;
     std::string mode;
 
     trajectory_msgs::JointTrajectory jt;

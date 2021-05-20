@@ -1,22 +1,25 @@
 #include "test_dynamixel/test_dynamixel.h"
 
-Test_Dynamixel::Test_Dynamixel() : nh("~")
+Test_Dynamixel::Test_Dynamixel() : private_nh("~")
 {
-    nh.param("hz",hz,{10});
-    nh.param("target_angle",target_angle,{M_PI/6});
-    nh.param("dynamixel_name",dynamixel_name,{"dynamixel"});
-    nh.param("mode",mode,{"reader"});
+    private_nh.param("hz",hz,{10});
+    private_nh.param("target_angle",target_angle,{M_PI/6});
+    private_nh.param("dynamixel_name",dynamixel_name,{"dynamixel"});
+    private_nh.param("dynamixel_frame",dynamixel_frame,{"dynamixel"});
+    private_nh.param("mode",mode,{"reader"});
+
 
     joint_sub = nh.subscribe("/dynamixel_workbench/joint_states",10,&Test_Dynamixel::jointstate_callback,this);
     joint_pub = nh.advertise<trajectory_msgs::JointTrajectory>("/dynamixel_workbench/joint_trajectory",1);
 
-    jt.header.frame_id = "base_motor";
+    jt.header.frame_id = dynamixel_frame;
     jt.points.resize(1);
     jt.joint_names.resize(1);
     jt.joint_names[0] = dynamixel_name;
     jt.points[0].positions.resize(2);
     jt.points[0].positions[0] = 0.0;
 
+    std::cout << "----- Dynamixel Parameters -----" << std::endl;
     std::cout << "hz: " << hz << std::endl;
     std::cout << "target_angle: " << target_angle << std::endl;
     std::cout << "dynamixel_name: " << dynamixel_name << std::endl;
@@ -34,8 +37,10 @@ void Test_Dynamixel::jointstate_callback(const sensor_msgs::JointState::ConstPtr
 
 void Test_Dynamixel::set_angle(double angle=0.0)
 {
-    if(angle > M_PI) angle -= 2*M_PI;
-    if(angle < -M_PI) angle += 2*M_PI;
+    while(angle > M_PI || angle < -M_PI){
+        if(angle > M_PI) angle -= 2*M_PI;
+        if(angle < -M_PI) angle += 2*M_PI;
+    }
 
     jt.points[0].positions[0] = angle;
     jt.points[0].time_from_start = ros::Duration(1.0);
