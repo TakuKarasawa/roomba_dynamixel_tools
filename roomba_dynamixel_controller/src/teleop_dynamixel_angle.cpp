@@ -1,9 +1,8 @@
 #include <ros/ros.h>
-
-#include "dynamixel_angle_msgs/DynamixelAngle.h"
-
 #include <iostream>
 #include <math.h>
+
+#include "dynamixel_angle_msgs/DynamixelAngle.h"
 
 bool is_number(const std::string& str)
 {
