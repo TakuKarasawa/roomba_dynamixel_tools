@@ -7,7 +7,9 @@
 
 bool is_number(const std::string& str)
 {
-    for(char const &c : str){
+    std::string sub_str = str;
+    if(sub_str.substr(0,1) == "-") sub_str.erase(0,1);
+    for(char const &c : sub_str){
         if(std::isdigit(c) == 0) return false;
         else return true;
     }
