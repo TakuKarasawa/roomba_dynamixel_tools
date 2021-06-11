@@ -19,7 +19,7 @@ RoombaDynamixelController::RoombaDynamixelController() : private_nh("~")
 
     jt.points.resize(1);
     jt.joint_names.resize(1);
-    jt.joint_names[0] ="dynamixel";
+    jt.joint_names[0] = dynamixel_name;
     jt.points[0].positions.resize(2);
 }
 

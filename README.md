@@ -16,14 +16,14 @@ git clone https://github.com/TakuKarasawa/dynamixel-workbench.git
 git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
 ```
 
-## Dynamixel(モータ)の起動方法
-### 1. ポート権限を得る(*は番号)
+## Dynamixel MX-28AR(Protocol 2.0)の起動方法
+### 1. ポート権限を得る(*は番号), udevの設定をしている場合は不要([udevの設定](https://github.com/amslabtech/multi_robots/tree/master/multi_robots/udevs))
 ```
 sudo chmod a+rw /dev/ttyUSB*
 ```
 <br>
 
-### 2. Dynamixel(モータ)が検知できるか確認(*は番号)
+### 2. Dynamixel MX-28AR(Protocol 2.0)が検知できるか確認(*は番号)
 ```
 rosrun dynamixel_workbench_controllers find_dynamixel /dev/ttyUSB*
 ```
@@ -34,7 +34,7 @@ rosrun dynamixel_workbench_controllers find_dynamixel /dev/ttyUSB*
 [ INFO] [1544589737.539083688]: Find 0 Dynamixels
 [ INFO] [1544589737.539526809]: Succeed to init(57600)
 [ INFO] [1544589737.539570059]: Wait for scanning...
-[ INFO] [1544589755.441019922]: Find 2 Dynamixels
+[ INFO] [1544589755.441019922]: Find 1 Dynamixels
 [ INFO] [1544589755.441086482]: id : 1, model name : MX-28-2
 [ INFO] [1544589755.441504892]: Succeed to init(115200)
 [ INFO] [1544589755.441548969]: Wait for scanning...
@@ -60,9 +60,9 @@ roslaunch dynamixel_workbench_contrtollers roomba_joint.launch
 ```
 エラーメッセージが出たら
 ```
-dynamixel-workbench/dynamixel_workbench_controllers/config/roomba_joint.yaml
+dynamixel-workbench/dynamixel_workbench_controllers/config/roomba*_joint.yaml
 ```
-の"id"が一致していない可能性があるがあるため，先程記録した"id"を一致させる
+の"id"が一致していない可能性があるがあるため，先程記録した"id"を一致させる([*はroombaの番号](https://amslab.esa.io/posts/71))\
 もしくは，
 ```
 dynamixel-workbench/dynamixel_workbench_controllers/launch/roomba_joint.launch
@@ -78,10 +78,29 @@ roslaunch roomba_dynamixel_controller teleop_roomba_dynamixel.launch
 ```
 作動しない場合は，
 ```
-dynamixel_workbench/dynamixel_workbench_controller/config/roomba_joint.yaml
+dynamixel_workbench/dynamixel_workbench_controller/config/roomba*_joint.yaml
 ```
-の"dynamixel"と
+内の
 ```
-roomba_dynamixel_tools/roomba_dynamixel_controller/src/roomba_dynamixel.cpp
+[name]:
+  ID: [id]
+  [Control_Table_Item]: [value]
+  [Control_Table_Item]: [value]
+  .
+  .
+  .
 ```
-の"jt.joint_name[0]= が一致していない可能性があるので一致させる
+の"[name]: と
+```
+roomba_dynamixel_tools/roomba_dynamixel_controller/config/param/roomba_dynamixel_controller.yaml
+```
+の"dynamixel_name"が一致していない可能性があるので一致させる
+
+<br>
+
+回転の実行時間を変更させる場合は
+```
+roomba_dynamixel_tools/roomba_dynamixel_controller/config/param/roomba_dynamixel_controller.yaml
+```
+内の"execution_time"を変更する
+
