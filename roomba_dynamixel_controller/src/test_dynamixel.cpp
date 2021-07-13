@@ -39,7 +39,6 @@ void Test_Dynamixel::jointstate_callback(const sensor_msgs::JointState::ConstPtr
     joint_vel.data = msg->velocity[0];
     joint_eff.data = msg->effort[0];
 
-    /*
     geometry_msgs::TransformStamped dynamixel_pose;
     dynamixel_pose.header.stamp = ros::Time::now();
     dynamixel_pose.header.frame_id = base_link_frame_id;
@@ -47,7 +46,7 @@ void Test_Dynamixel::jointstate_callback(const sensor_msgs::JointState::ConstPtr
     dynamixel_pose.transform.translation.x = dynamixel_x;
     dynamixel_pose.transform.translation.y = dynamixel_y;
     dynamixel_pose.transform.translation.z = dynamixel_z;
-    
+
     tf2::Quaternion q;
     q.setRPY(dynamixel_roll,dynamixel_pitch,msg->position[0]);
     dynamixel_pose.transform.rotation.x = q.x();
@@ -55,7 +54,6 @@ void Test_Dynamixel::jointstate_callback(const sensor_msgs::JointState::ConstPtr
     dynamixel_pose.transform.rotation.z = q.z();
     dynamixel_pose.transform.rotation.w = q.w();
     broadcaster.sendTransform(dynamixel_pose);
-    */
 }
 
 void Test_Dynamixel::set_angle(double angle=0.0)
