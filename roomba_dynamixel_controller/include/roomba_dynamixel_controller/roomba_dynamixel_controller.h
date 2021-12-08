@@ -1,5 +1,5 @@
-#ifndef __ROOMBA_DYNAMIXEL_CONTROLLER_H
-#define __ROOMBA_DYNAMIXEL_CONTROLLER_H
+#ifndef ROOMBA_DYNAMIXEL_CONTROLLER_H_
+#define ROOMBA_DYNAMIXEL_CONTROLLER_H_
 
 #include <ros/ros.h>
 #include <ros/time.h> 
@@ -27,30 +27,30 @@ private:
     void offset_process(double& angle);
 
     // parameter
-    float target_angle;     // target angle
-    double offset_angle;    // offset angle(no use)
-    double execution_time;  // execution time
+    float target_angle_;     // target angle
+    double offset_angle_;    // offset angle(no use)
+    double execution_time_;  // execution time
     
     // dynamixel parameter
-    std::string dynamixel_name;
-    std::string base_link_frame_id;
-    std::string dynamixel_frame_id;
+    std::string dynamixel_name_;
+    std::string base_link_frame_id_;
+    std::string dynamixel_frame_id_;
 
     // tf
-    tf2_ros::TransformBroadcaster broadcaster;
-    double dynamixel_x;
-    double dynamixel_y;
-    double dynamixel_z;
-    double dynamixel_roll;
-    double dynamixel_pitch;
+    std::shared_ptr<tf2_ros::TransformBroadcaster> broadcaster_;
+    double dynamixel_x_;
+    double dynamixel_y_;
+    double dynamixel_z_;
+    double dynamixel_roll_;
+    double dynamixel_pitch_;
 
     // ros
-    ros::NodeHandle private_nh;
-    ros::NodeHandle nh;
-    ros::Publisher joint_pub;
-    ros::Subscriber angle_sub;
-    ros::Subscriber joint_sub;
-    trajectory_msgs::JointTrajectory jt;
+    ros::NodeHandle private_nh_;
+    ros::NodeHandle nh_;
+    ros::Publisher joint_pub_;
+    ros::Subscriber angle_sub_;
+    ros::Subscriber joint_sub_;
+    trajectory_msgs::JointTrajectory jt_;
 };
 
-#endif // __ROOMBA_DYNAMIXEL_CONTROLLER_H
+#endif // ROOMBA_DYNAMIXEL_CONTROLLER_H_
