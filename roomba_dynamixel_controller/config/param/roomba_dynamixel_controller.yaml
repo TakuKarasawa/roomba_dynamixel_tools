@@ -1,10 +1,12 @@
 # roomba_dynamixel_controller's parameter
-execution_time: 0.4
+DYNAMIXEL_NAME: dynamixel
+EXECUTION_TIME: 0.4
 
-# tf parameter
-dynamixel_name: dynamixel
-dynamixel_frame_id: dynamixel
-base_link_frame_id: base_link
+# frame id
+DYNAMIXEL_FRAME_ID: dynamixel
+ROBOT_FRAME_ID: base_link
+
+# tf params
 dynamixel_x: 0.0
 dynamixel_y: 0.0
 dynamixel_z: 0.633

@@ -1,10 +1,7 @@
 #include "roomba_dynamixel_controller/roomba_dynamixel_controller.h"
 
-RoombaDynamixelController::RoombaDynamixelController() :
-    private_nh_("~"),
-    target_angle_(0.0)
+RoombaDynamixelController::RoombaDynamixelController() : private_nh_("~")
 {
-    private_nh_.param("IS_TF_PUBLISH",IS_TF_PUBLISH_,{true});
     private_nh_.param("DYNAMIXEL_NAME",DYNAMIXEL_NAME_,{std::string("dynamixel")});
     private_nh_.param("DYNAMIXEL_FRAME_ID",DYNAMIXEL_FRAME_ID_,{std::string("dynamixel")});
     private_nh_.param("ROBOT_FRAME_ID",ROBOT_FRAME_ID_,{std::string("base_link")});
@@ -16,20 +13,19 @@ RoombaDynamixelController::RoombaDynamixelController() :
     private_nh_.param("DYNAMIXEL_ROLL",DYNAMIXEL_ROLL_,{0.0});
     private_nh_.param("DYNAMIXEL_PITCH",DYNAMIXEL_PITCH_,{0.0});
 
-    joint_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/dynamixel_workbench/joint_trajectory",1);
-    angle_sub_ = nh_.subscribe("/angle",10,&RoombaDynamixelController::angle_callback,this);
-    joint_sub_ = nh_.subscribe("/dynamixel_workbench/joint_states",10,&RoombaDynamixelController::jointstate_callback,this);
+    joint_sub_ = nh_.subscribe("joint_in",10,&RoombaDynamixelController::jointstate_callback,this);
+    angle_sub_ = nh_.subscribe("angle_in",10,&RoombaDynamixelController::angle_callback,this);
 
-    broadcaster_.reset(new tf2_ros::TransformBroadcaster);
-
-    init_jt_msg(jt_);
+    joint_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("joint_out",1);
+    
+    private_nh_.param("IS_TF",IS_TF_,{true});
+    if(IS_TF_) broadcaster_.reset(new tf2_ros::TransformBroadcaster);
 }
 
 void RoombaDynamixelController::angle_callback(const dynamixel_angle_msgs::DynamixelAngle::ConstPtr& msg)
 {
     ROS_INFO("has received angle!");
-    target_angle_ = msg->theta;
-    set_parameter(target_angle_);
+    publish_angle(msg->angle);
 }
 
 void RoombaDynamixelController::init_jt_msg(trajectory_msgs::JointTrajectory& jt)
@@ -42,8 +38,7 @@ void RoombaDynamixelController::init_jt_msg(trajectory_msgs::JointTrajectory& jt
 
 void RoombaDynamixelController::jointstate_callback(const sensor_msgs::JointState::ConstPtr& msg)
 {
-    if(IS_TF_PUBLISH_){
-        // tf
+    if(IS_TF_){
         geometry_msgs::TransformStamped dynamixel_pose;
         dynamixel_pose.header.stamp = ros::Time::now();
         dynamixel_pose.header.frame_id = ROBOT_FRAME_ID_;
@@ -60,19 +55,19 @@ void RoombaDynamixelController::jointstate_callback(const sensor_msgs::JointStat
         dynamixel_pose.transform.rotation.w = q.w();
         broadcaster_->sendTransform(dynamixel_pose);
     }
-    else return;
 }
 
-void RoombaDynamixelController::set_parameter(double angle = 0.0)
+void RoombaDynamixelController::publish_angle(double angle = 0.0)
 {
-    normalize(angle);
-
-    jt_.points[0].positions[0] = angle;
-    jt_.points[0].time_from_start = ros::Duration(EXECUTION_TIME_);
-    joint_pub_.publish(jt_);
+    normalize_angle(angle);
+    trajectory_msgs::JointTrajectory jt;
+    init_jt_msg(jt);
+    jt.points[0].positions[0] = angle;
+    jt.points[0].time_from_start = ros::Duration(EXECUTION_TIME_);
+    joint_pub_.publish(jt);
 }
 
-void RoombaDynamixelController::normalize(double& angle)
+void RoombaDynamixelController::normalize_angle(double& angle)
 {
     while(angle > M_PI || angle <= -M_PI){
         if(angle > M_PI) angle -= 2*M_PI;
@@ -80,7 +75,7 @@ void RoombaDynamixelController::normalize(double& angle)
     }
 }
 
-void RoombaDynamixelController::offset_process(double& angle)
+void RoombaDynamixelController::offset_angle(double& angle)
 {
     if(OFFSET_ANGLE_ > 0){
         if(angle > M_PI - OFFSET_ANGLE_) angle += OFFSET_ANGLE_ - 2*M_PI;

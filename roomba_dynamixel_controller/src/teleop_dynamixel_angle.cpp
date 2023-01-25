@@ -1,6 +1,7 @@
 #include <ros/ros.h>
+
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 #include "dynamixel_angle_msgs/DynamixelAngle.h"
 
@@ -19,20 +20,21 @@ int main(int argc,char **argv)
     ros::init(argc,argv,"teleop_angle");
     ros::NodeHandle nh;
     ros::Publisher pub = nh.advertise<dynamixel_angle_msgs::DynamixelAngle>("/angle",1);
- 
+
     while(1){
-        std::cout << "Input an angle [rad] (-M_PI ~ M_PI)" << std::endl;
-        
+        std::cout << "Input a 'q' if you want to exit" << std::endl;
+        std::cout << "Input an angle [rad] (-M_PI ~ M_PI): ";
         std::string input;
         std::cin >> input;
         if(is_number(input)){
             dynamixel_angle_msgs::DynamixelAngle angle;
-            angle.theta = std::stof(input);
+            angle.header.stamp = ros::Time::now();
+            angle.angle = std::stof(input);
             pub.publish(angle);
-            ROS_INFO_STREAM("Success to publish angle");        
+            std::cout << "Success to publish angle: " << angle.angle << "[rad]" << std::endl << std::endl;
         }else{
             if(input == "q") break;
-            ROS_ERROR("The input value is invalid");
+            std::cerr << "The input value is invalid" << std::endl << std::endl;
         }
     }
 

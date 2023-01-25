@@ -1,22 +1,20 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(roomba_dynamixel_controller)
 
+add_compile_options(-o2 -g -Wall)
+
 find_package(catkin REQUIRED COMPONENTS
-  cmake_modules
+  dynamixel_angle_msgs
   geometry_msgs
   roscpp
   sensor_msgs
   std_msgs
-  std_srvs
-  trajectory_msgs
-  dynamixel_angle_msgs
-  tf2
   tf2_ros
+  trajectory_msgs
 )
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS cmake_modules geometry_msgs roscpp sensor_msgs std_msgs std_srvs trajectory_msgs
 )
 
 include_directories(
@@ -24,10 +22,14 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+# roomba_dynamixel_controller
 add_executable(roomba_dynamixel_controller src/roomba_dynamixel_controller.cpp)
-add_executable(test_dynamixel src/test_dynamixel.cpp)
-add_executable(teleop_dynamixel_angle src/teleop_dynamixel_angle.cpp)
-
 target_link_libraries(roomba_dynamixel_controller ${catkin_LIBRARIES})
-target_link_libraries(test_dynamixel ${catkin_LIBRARIES})
+
+# dynamixel_tester
+add_executable(dynamixel_tester src/dynamixel_tester.cpp)
+target_link_libraries(dynamixel_tester ${catkin_LIBRARIES})
+
+# teleop_dynamixel_angle
+add_executable(teleop_dynamixel_angle src/teleop_dynamixel_angle.cpp)
 target_link_libraries(teleop_dynamixel_angle ${catkin_LIBRARIES})
