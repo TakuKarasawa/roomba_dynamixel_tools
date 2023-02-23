@@ -1,19 +1,19 @@
 # roomba_dynamixel_tools
 
 ## インストールとビルド
-事前にDynamixelSdkとDynamixel,Dynamixel-workbench,dynamixel-workbench-msgsをインストールしておく必要がある
+事前にDynamixel SDK,Dynamixel Workbench,dynamixel_workbench_msgsをインストールしておく必要がある
 
-* DynamixelSdk 
+* [Dynamixel SDK](https://github.com/TakuKarasawa/DynamixelSDK)
 ```
-git clone https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+git clone https://github.com/TakuKarasawa/DynamixelSDK.git
 ```
-* Dynamixel-workbench
+* [Dynamixel Workbench](https://github.com/TakuKarasawa/dynamixel_workbench)
 ```
-git clone https://github.com/TakuKarasawa/dynamixel-workbench.git
+git clone https://github.com/TakuKarasawa/dynamixel_workbench.git
 ```
-* Dynamixel-workbench-msgs
+* [dynamixel_workbench_msgs](https://github.com/TakuKarasawa/dynamixel_workbench_msgs)
 ```
-git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
+git clone https://github.com/TakuKarasawa/dynamixel_workbench_msgs.git
 ```
 
 ## Dynamixel MX-28AR(Protocol 2.0)の起動方法
